@@ -1,6 +1,5 @@
 package resources;
 
-import utils.RandomData;
 import model.Activity;
 import model.ActivitySelection;
 import model.FoodSelection;
@@ -15,7 +14,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.*;
@@ -324,7 +326,7 @@ public class EHealthResource {
 				healthMeasureHistory.setIdHealthMeasureHistory(0);
 				healthMeasureHistory.setMeasureDefinition(hm.getMeasureDefinition());
 				healthMeasureHistory.setPerson(person);
-				healthMeasureHistory.setTimestamp(new RandomData().getDateTime());
+				healthMeasureHistory.setTimestamp(this.getDateTime());
 				healthMeasureHistory.setValue(hm.getValue());
 				person.getHealthMeasuresHistories().add(healthMeasureHistory);
 				person.getHealthMeasures().remove(hm);
@@ -633,4 +635,10 @@ public class EHealthResource {
 	    return ("Table created successfully");
 	}
 
+	public String getDateTime() {
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		String date = dateFormat.format(new Date());
+		return date;
+}
+	
 }

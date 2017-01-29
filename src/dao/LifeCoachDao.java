@@ -20,7 +20,6 @@ public enum LifeCoachDao {
 		try {
 			return emf.createEntityManager();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;    
