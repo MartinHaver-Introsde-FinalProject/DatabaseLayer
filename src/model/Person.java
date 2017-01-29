@@ -152,7 +152,7 @@ public class Person implements Serializable {
 		return person;
 	}
 
-	public static Person updatePerson(Person person) {
+	public Person updatePerson(Person person) {
 		EntityManager em = LifeCoachDao.instance.createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
