@@ -55,7 +55,7 @@ public class EHealthResource {
 	@Produces({ MediaType.TEXT_HTML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public String getInfo() {
 		System.out.println("Getting api information...");
-		return "Hello! This is Local database service by M.Haver";
+		return "Hello! This is Local database service by M.Haver, special message: lubim natalku";
 	}
 	
 
