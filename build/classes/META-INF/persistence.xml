@@ -9,7 +9,6 @@
 		<class>model.MeasureDefinition</class>
 		<class>model.Person</class>
 		<class>model.Goal</class>
-		<class>model.FoodSelection</class>
 		<class>model.ActivitySelection</class>
 		<class>model.Activity</class>
 		<properties>

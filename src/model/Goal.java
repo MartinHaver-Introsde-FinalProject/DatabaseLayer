@@ -55,9 +55,6 @@ public class Goal implements Serializable {
 	private double shavedCalories;
 	
 	@OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<FoodSelection> foodSelections;
-	
-	@OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ActivitySelection> activitySelections;
 	
 	public Goal() {
@@ -127,15 +124,6 @@ public class Goal implements Serializable {
 
 	public void setShavedCalories(double shavedCalories) {
 		this.shavedCalories = shavedCalories;
-	}
-
-	@XmlElementWrapper(name = "foodSelections")
-	public List<FoodSelection> getFoodSelections() {
-		return foodSelections;
-	}
-
-	public void setFoodSelections(List<FoodSelection> foodSelections) {
-		this.foodSelections = foodSelections;
 	}
 
 	@XmlElementWrapper(name = "activitySelections")

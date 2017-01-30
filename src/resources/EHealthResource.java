@@ -2,13 +2,11 @@ package resources;
 
 import model.Activity;
 import model.ActivitySelection;
-import model.FoodSelection;
 import model.Goal;
 import model.HealthMeasure;
 import model.HealthMeasureHistory;
 import model.MeasureDefinition;
 import model.Person;
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.ejb.*;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -55,7 +52,7 @@ public class EHealthResource {
 	@Produces({ MediaType.TEXT_HTML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public String getInfo() {
 		System.out.println("Getting api information...");
-		return "Hello! This is Local database service by M.Haver, special message: lubim natalku";
+		return "Hello! This is Local database service by M.Haver;
 	}
 	
 
@@ -172,31 +169,6 @@ public class EHealthResource {
 		return person.getHealthMeasuresHistories();
 	}
 
-	/*
-	 * Getting the current Food Selection of current Goal of a Person identified by idPerson.
-	 * 
-	 * http://localhost:8080/introsde.local-database-service/api/person/1/goal/foodSelection
-	 * 
-	 * GET: OK
-	 */
-
-	@GET
-	@Path("/person/{idPerson}/goal/foodSelection")
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public FoodSelection getFoodSelectionOfCurrentGoalOfPersonById(@PathParam("idPerson") int idPerson) {
-		System.out.println("Getting the current Food Selection of current Goal of a Person identified by idPerson = " + idPerson + "...");
-		Person person = Person.getPersonById(idPerson);
-		for (Goal goal : person.getGoals()) {
-			if (goal.getCurrent() == 1) {
-				for (FoodSelection foodSelection : goal.getFoodSelections()) {
-					if (foodSelection.getCurrent() == 1) {
-						return foodSelection;
-					}
-				}
-			}
-		}
-		return null;
-	}
 
 	/*
 	 * Getting the current Activity Selection of current Goal of a Person identified by idPerson.
@@ -342,43 +314,6 @@ public class EHealthResource {
 		}
 		healthMeasure.setPerson(person);
 		person.getHealthMeasures().add(healthMeasure);
-		person = person.updatePerson(person);
-		return person;
-	}
-
-	/*
-	 * Creating new Food Selection for current Goal of a Person
-	 * 
-	 * http://localhost:8080/introsde.local-database-service/api/person/1/goal/foodSelection
-	 * 
-	 * POST: OK
-	 * 
-	 * { "idFoodSelection": 0, "label": "Thai Chicken Salad", "image":
-	 * "https://www.edamam.com/web-img/c5c/c5c51c310b92f9f47c5a34ce7af6328b.jpg",
-	 * "calories": 956, "weight": 637, "ingredients":
-	 * "1: Little gem lettuce leaves and cucumber batons to serve (20.0);2: 2 garlic cloves , finely chopped (6.0);3: A small handful mint and coriander leaves (7.98);4: 3.0 tbsp lime juice (46.03094);5: 1 stalk lemon grass , woody outer leaves removed, finely chopped (20.0);6: 2 red chilli , finely chopped (0.0);7: 100.0ml chicken stock (101.4456);8: 400.0g minced chicken (buy minced or whizz chicken thigh fillets in a food processor) (400.0);9: A thumb-sized piece root ginger , grated (0.001);10: 2.0 tbsp fish sauce (36.0);"
-	 * , "current": 1 }
-	 */
-
-	@POST
-	@Path("/person/{idPerson}/goal/foodSelection")
-	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.TEXT_XML, MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Person saveGoalForPerson(@PathParam("idPerson") int idPerson, FoodSelection foodSelection)
-			throws IOException {
-		System.out.println("Creating new food selection for person with id = " + idPerson + "...");
-		Person person = Person.getPersonById(idPerson);
-		for (Goal goal : person.getGoals()) {
-			if (goal.getCurrent() == 1) {
-				for (FoodSelection fs : goal.getFoodSelections()) {
-					if (fs.getCurrent() == 1) {
-						fs.setCurrent(0);
-					}
-				}
-				foodSelection.setGoal(goal);
-				goal.getFoodSelections().add(foodSelection);
-			}
-		}
 		person = person.updatePerson(person);
 		return person;
 	}
@@ -591,8 +526,6 @@ public class EHealthResource {
 					+ "INSERT INTO \"Activity\" VALUES(84,'Stair stepper, hard effort (RPE 15)',626,'Indoor exercise machines');"
 					+ "DROP TABLE IF EXISTS \"ActivitySelection\";"
 					+ "CREATE TABLE \"ActivitySelection\" (\"idActivitySelection\" INTEGER PRIMARY KEY  NOT NULL ,\"current\" INTEGER,\"time\" TEXT,\"usedCalories\" DOUBLE DEFAULT (null) ,\"idGoal\" INTEGER, \"idActivity\" INTEGER);"
-					+ "DROP TABLE IF EXISTS \"FoodSelection\";"
-					+ "CREATE TABLE \"FoodSelection\" (\"idFoodSelection\" INTEGER PRIMARY KEY  NOT NULL ,\"label\" TEXT,\"image\" TEXT,\"calories\" DOUBLE DEFAULT (null) ,\"weight\" DOUBLE DEFAULT (null) ,\"ingredients\" TEXT,\"idGoal\" INTEGER,\"current\" INTEGER);"
 					+ "DROP TABLE IF EXISTS \"Goal\";"
 					+ "CREATE TABLE \"Goal\" (\"idGoal\" INTEGER PRIMARY KEY  NOT NULL ,\"goalName\" TEXT,\"idPerson\" INTEGER,\"current\" INTEGER,\"idealBmi\" DOUBLE DEFAULT (null) ,\"idealWeight\" DOUBLE DEFAULT (null) ,\"date\" TEXT DEFAULT (null) ,\"shavedCalories\" DOUBLE DEFAULT (null) );"
 					+ "DROP TABLE IF EXISTS \"HealthMeasure\";"
@@ -619,9 +552,9 @@ public class EHealthResource {
 					+ "INSERT INTO \"MeasureRange\" VALUES(4,4,'Underweight',NULL,20,1);"
 					+ "DROP TABLE IF EXISTS \"Person\";"
 					+ "CREATE TABLE \"Person\" (\"idPerson\" INTEGER PRIMARY KEY ,\"firstname\" TEXT DEFAULT ('NULL') ,\"lastname\" TEXT DEFAULT ('NULL') ,\"birthdate\" TEXT DEFAULT ('NULL') ,\"username\" TEXT DEFAULT ('NULL') ,\"sex\" INTEGER DEFAULT (null) );"
-					+ "INSERT INTO \"Person\" VALUES(1,'Chuck','Norris','1945-01-01 00:00:00','chuck.norris',1);"
-					+ "INSERT INTO \"Person\" VALUES(2,'Pallino','Pinco','1982-06-08 18:00:00','pinco',1);"
-					+ "INSERT INTO \"Person\" VALUES(3,'Pappo','Pippo','1990-01-01 00:00:00','pippo',0);"
+					+ "INSERT INTO \"Person\" VALUES(1,'Martin','Haver','1945-01-01 00:00:00','martin',1);"
+					+ "INSERT INTO \"Person\" VALUES(2,'Yotam','Ottolenghi','1982-06-08 18:00:00','yotam',1);"
+					+ "INSERT INTO \"Person\" VALUES(3,'Ivan','Zaytsev','1990-01-01 00:00:00','ivan',0);"
 					+ "DROP TABLE IF EXISTS \"SEQUENCE\";"
 					+ "CREATE TABLE SEQUENCE (SEQ_NAME VARCHAR(50) NOT NULL, SEQ_COUNT NUMBER(19), PRIMARY KEY (SEQ_NAME));"
 					+ "INSERT INTO \"SEQUENCE\" VALUES('SEQ_GEN',4);";
