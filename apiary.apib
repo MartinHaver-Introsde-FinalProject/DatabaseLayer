@@ -1,0 +1,286 @@
+FORMAT: 1A
+HOST: https://warm-gorge-12466.herokuapp.com/api
+
+# Database Service
+
+This web service deals with accessess (read, write, delete) to local database that holds people, goals,
+measuerements and other important entities. It exposes these for further processing
+by Storage web service.
+
+## List of people [/person]
+
+### Print All People [GET]
+
++ Response 200 (application/xml)
+
+        <people>
+            <person>
+                <birthdate>1945-01-01 00:00:00</birthdate>
+                <firstname>Martin</firstname>
+                <goals>
+                    <goals>
+                        <activitySelections>
+                            <activitySelections>
+                                <activity>
+                                    <activityName>Football, touch, flag, general</activityName>
+                                    <activityType>Sports</activityType>
+                                    <caloriesPerHour>476.0</caloriesPerHour>
+                                    <idActivity>49</idActivity>
+                                </activity>
+                                <current>0</current>
+                                <idActivitySelection>201</idActivitySelection>
+                                <time>0.0</time>
+                                <usedCalories>0.0</usedCalories>
+                            </activitySelections>
+                            <activitySelections>
+                                <activity>
+                                    <activityName>Tango</activityName>
+                                    <activityType>Dancing</activityType>
+                                    <caloriesPerHour>488.0</caloriesPerHour>
+                                    <idActivity>31</idActivity>
+                                </activity>
+                                <current>1</current>
+                                <idActivitySelection>251</idActivitySelection>
+                                <time>-1.2</time>
+                                <usedCalories>-585.6</usedCalories>
+                            </activitySelections>
+                        </activitySelections>
+                        <current>0</current>
+                        <date>10-12-2016</date>
+                        <goalName>Lose weight 0.5kg per week.</goalName>
+                        <idGoal>451</idGoal>
+                        <idealBmi>31.14186851211073</idealBmi>
+                        <idealWeight>66.93880471291338</idealWeight>
+                        <shavedCalories>492.5999999999998</shavedCalories>
+                    </goals>
+                </goals>
+            </person>
+        </people>
+
+
+## People by ID [/person/2]
+
+### Print people by ID [GET]
++ Response 200 (application/xml)
+
+        <person>
+            <birthdate>1982-06-08 18:00:00</birthdate>
+            <firstname>Dragan</firstname>
+            <goals/>
+            <healthMeasures/>
+            <healthMeasuresHistories/>
+            <idPerson>2</idPerson>
+            <lastname>Travica</lastname>
+            <sex>1</sex>
+            <username>dragan</username>
+        </person>
+
+## Peoples' current goals by ID [/person/1/goal]
+
+### Print person's goals by ID [GET]
++ Response 200 (application/xml)
+
+        <goal>
+            <activitySelections/>
+            <current>1</current>
+            <date>13-12-2016</date>
+            <goalName>Lose weight 5kg per month.</goalName>
+            <idGoal>651</idGoal>
+            <idealBmi>33.057851239669425</idealBmi>
+            <idealWeight>61.58141451606299</idealWeight>
+            <shavedCalories>1999.5</shavedCalories>
+        </goal>
+
+### Create new goal for person [POST]
++ Request (application/json)
+
+        { 
+        "idGoal": 0, 
+        "goalName": "Lose weight 0.5 kg per week 3",
+        "current": 1,
+        "idealWeight": 65,
+        "date": "06-12-2016",
+        "idealBmi": 22,
+        "shavedCalories": null,
+        "foodSelections": null,
+        "activitySelections": null
+        }
++ Response 201 (application/json)
+
+### Update goal [PUT]
+
++ Request (application/json)
+
+        { 
+        "shavedCalories": 600 
+        }
+
++ Response 201 (application/json)
+        
+## Peoples' goals' history [/person/1/goalHistory]
+
+### Print goals history by personID [GET]
++ Response 200 (application/xml)
+
+        <goals>
+            <goal>
+                <activitySelections>
+                    <activitySelections>
+                        <activity>
+                            <activityName>Football, touch, flag, general</activityName>
+                            <activityType>Sports</activityType>
+                            <caloriesPerHour>476.0</caloriesPerHour>
+                            <idActivity>49</idActivity>
+                        </activity>
+                        <current>0</current>
+                        <idActivitySelection>201</idActivitySelection>
+                        <time>0.0</time>
+                        <usedCalories>0.0</usedCalories>
+                    </activitySelections>
+                    <activitySelections>
+                        <activity>
+                            <activityName>Aerobic, step using a 6 to 8 inch step</activityName>
+                            <activityType>Dancing</activityType>
+                            <caloriesPerHour>488.0</caloriesPerHour>
+                            <idActivity>31</idActivity>
+                        </activity>
+                        <current>1</current>
+                        <idActivitySelection>251</idActivitySelection>
+                        <time>-1.2</time>
+                        <usedCalories>-585.6</usedCalories>
+                    </activitySelections>
+                </activitySelections>
+                <current>0</current>
+                <date>10-12-2016</date>
+                <goalName>Lose weight 0.5kg per week.</goalName>
+                <idGoal>451</idGoal>
+                <idealBmi>31.14186851211073</idealBmi>
+                <idealWeight>66.93880471291338</idealWeight>
+                <shavedCalories>492.5999999999998</shavedCalories>
+            </goal>
+        </goals>
+
+## Peoples health measures [/person/1/healthMeasure]
+
+### Print people' healht measures [GET]
++ Response 200 (application/xml)
+
+        <healthMeasures>
+            <healthMeasure>
+                <idHealthMeasure>1</idHealthMeasure>
+                <measureDefinition>
+                    <idMeasureDefinition>1</idMeasureDefinition>
+                    <measureName>weight</measureName>
+                    <measureRanges/>
+                    <measureType>double</measureType>
+                </measureDefinition>
+                <value>90.0</value>
+            </healthMeasure>
+        </healthMeasures>
+        
+## Peoples' health measures' history [/person/1/healthMeasureHistory]
+
+### Print health measure history by personID [GET]
++ Response 200 (application/xml)
+        
+        <healthMeasureHistories>
+            <healthMeasureHistory>
+                <idHealthMeasureHistory>601</idHealthMeasureHistory>
+                <measureDefinition>
+                    <idMeasureDefinition>1</idMeasureDefinition>
+                    <measureName>weight</measureName>
+                    <measureRanges/>
+                    <measureType>double</measureType>
+                </measureDefinition>
+                <timestamp>12-12-2016</timestamp>
+                <value>90.0</value>
+            </healthMeasureHistory>
+            <healthMeasureHistory>
+                <idHealthMeasureHistory>602</idHealthMeasureHistory>
+                <measureDefinition>
+                    <idMeasureDefinition>2</idMeasureDefinition>
+                    <measureName>height</measureName>
+                    <measureRanges/>
+                    <measureType>double</measureType>
+                </measureDefinition>
+                <timestamp>12-12-2016</timestamp>
+                <value>1.7</value>
+            </healthMeasureHistory>        
+        </healthMeasureHistories>        
+
+## Activities [/activity]
+
+### List all activities [GET]
++ Response 200 (application/xml)
+
+        <activities>
+            <activity>
+                <activityName>General jogg</activityName>
+                <activityType>Running</activityType>
+                <caloriesPerHour>390.0</caloriesPerHour>
+                <idActivity>1</idActivity>
+            </activity>
+            <activity>
+                <activityName>Jumping jacks</activityName>
+                <activityType>Running</activityType>
+                <caloriesPerHour>455.0</caloriesPerHour>
+                <idActivity>2</idActivity>
+            </activity>
+        </activities>
+
+## Activities by ID [/activity/10]
+
+### List activity by ID [GET]
++ Response 200 (application/xml)
+
+        <activity>
+            <activityName>Running, 8 mph 7.5 min/mile</activityName>
+            <activityType>Running</activityType>
+            <caloriesPerHour>813.0</caloriesPerHour>
+            <idActivity>10</idActivity>
+        </activity>
+
+## New Health Measure [/person/1/healthMeasure/1]
+### Create new health measure [POST]
+
+Creating new Health Measure belonging to a Health Measure Type
+and putting the old Health Measure into Health Measure History
+for a Person identified by idPerson.
+
++ Request (application/json)
+
+        { 
+        "idHealthMeasure": 1,
+        "value": "68",
+        "measureDefinition": null
+        }
+
++ Response 201 (application/json)
+
+## New Activity [/person/1/goal/activitySelection]
+### Create new activity [POST]
+
+Creating new Activity Selection for current Goal of a Person
+
++ Request (application/json)
+
+        { 
+        "idActivity": 4,
+        "activityName": "Running, 5 mph 12 min/mile",
+        "caloriesPerHour": "455", "activityType": "Running"
+        }
+
++ Response 201 (application/json)
+
+### Update activity [PUT]
+
+Updating Activity Selection (time, usedCalories)
+
++ Request (application/json)
+
+        { 
+        "time": 2, 
+        "usedCalories": 1000
+        }
+
++ Response 201 (application/json)
