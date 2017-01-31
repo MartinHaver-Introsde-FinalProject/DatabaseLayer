@@ -29,7 +29,7 @@ import javax.ws.rs.core.UriInfo;
 
 @Stateless
 @LocalBean
-@Path("/api")
+@Path("/database")
 public class EHealthResource {
 	@Context
 	UriInfo uriInfo;
